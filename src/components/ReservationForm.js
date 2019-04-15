@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux';
+import { createReservation } from '../actions';
 class ReservationForm extends Component {
     state = {
         driver_id:'',
@@ -71,4 +72,13 @@ class ReservationForm extends Component {
     )
   }
 }
-export default ReservationForm;
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createReservation: (reservation) => dispatch(createReservation(reservation))
+    }
+}
+
+
+export default connect(null, mapDispatchToProps)(ReservationForm);
+ 
