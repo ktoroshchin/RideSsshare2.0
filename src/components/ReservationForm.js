@@ -22,7 +22,7 @@ class ReservationForm extends Component {
 
     handleSubmit = (e) => { 
         e.preventDefault()
-        console.log(this.state)
+        this.props.createReservation(this.state)
     }
 
 
