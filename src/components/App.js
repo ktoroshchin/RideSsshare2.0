@@ -7,6 +7,7 @@ import Header from './Header';
 import SocialLogin from './SocialLogin';
 import Welcome from './Welcome';
 import ReservationDetails from './ReservationDetails'
+import DisplayReservations from './DisplayReservations';
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                         <Route path='/signin' exact component={SocialLogin}/>
                         <Route path='/reservation' exact component={ReservationForm}/>
                         <Route path='/reservation/details/:id' exact component={ReservationDetails}/>
+                        <Route path='/displayreservations' exact component={DisplayReservations}/>
                     </Switch>
                 </BrowserRouter>
             </div>

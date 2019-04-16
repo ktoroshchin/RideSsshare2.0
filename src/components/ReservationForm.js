@@ -10,6 +10,7 @@ class ReservationForm extends Component {
         destination: '',
         departure_from: '',
         departure_time: '',
+        departure_date: '',
         number_of_passengers: '',
         comments: ''
     }
@@ -45,6 +46,10 @@ class ReservationForm extends Component {
                 <div className="field">
                     <label>Phone number</label>
                     <input onChange={this.handleInputChange}  value={this.state.phone_number} name="phone_number" placeholder="phone number"/>
+                </div>
+                <div className="field">
+                    <label>Departure date</label>
+                    <input onChange={this.handleInputChange}  value={this.state.departure_date} name="departure_date" placeholder="departure date"/>
                 </div>
                 <div className="field">
                     <label>Destination</label>
