@@ -3,27 +3,27 @@ import SingleReservation from './SingleReservation'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect} from 'react-redux-firebase';
+import { Container } from 'semantic-ui-react';
 
 class DisplayReservations extends Component {
 
-    componentWillMount(){
-
-    }
-
-    renderReservations = (props) => {
-        return this.props.reservations.map((order, index, array) => {
+    renderReservations = () => {
+        return this.props.reservations.map((order, index) => {
             return (
                 <SingleReservation
                     key={order.id}
                     index={index}
                     id={order.id}
-                    driver_id={order.driver_id}
                     name={order.name}
+                    email={order.email}
+                    driver_id={order.driver_id}
                     departure_from={order.departure_from}
                     departure_time={order.departure_time}
+                    departure_date={order.departure_date}
                     destination={order.destination}
                     number_of_passengers={order.number_of_passengers}
                     phone_number={order.phone_number}
+                    comments={order.comments}
                 />
             )
         })
@@ -34,9 +34,9 @@ class DisplayReservations extends Component {
             return <div>Loading...</div>
         }
         return (
-            <div>
+            <Container>
                 {this.renderReservations()}
-            </div>
+            </Container>
         );
     }
 }
