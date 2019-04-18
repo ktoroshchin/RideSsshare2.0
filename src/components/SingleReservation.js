@@ -7,7 +7,6 @@ class SingleReservation extends Component{
     state = { activeIndex: null }
 
     handleClick = (e, titleProps) => {
-        console.log(titleProps)
         const { index } = titleProps
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
@@ -15,7 +14,6 @@ class SingleReservation extends Component{
         this.setState({ activeIndex: newIndex })
     }
     render(){
-        console.log(this.props)
         const { activeIndex } = this.state
         const { departure_from, departure_date, departure_time, destination, driver_id, email, index, comments, name, number_of_passengers, phone_number } = this.props;
 

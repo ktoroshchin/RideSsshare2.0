@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { createReservation } from '../actions';
+import { createReservation } from '../actions/createReservation';
 class ReservationForm extends Component {
     state = {
         driver_id:'',

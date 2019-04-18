@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { Component }  from 'react';
+import { Redirect } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
+import fbConfig from '../config/fbConfig';
 
-const SignOutButton = () => {
-    return (
-        <button className="ui red button">
-            Sign Out
-        </button>
-    )
+class SignOutButton extends Component {
+
+    onSignOutClick = () => {
+        fbConfig.auth().signOut()
+    }
+
+    render(){
+        return (
+            <Button onClick={this.onSignOutClick}>
+                Sign Out
+            </Button>
+        )
+    }
 }
 
 export default SignOutButton;
