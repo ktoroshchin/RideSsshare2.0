@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
-import {  Grid, Segment, Form, Divider, Button } from 'semantic-ui-react';
+import {  Grid, Segment, Form, Divider, Button, Message } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
 import { connect } from 'react-redux';
-import { authAction } from '../actions/authAction';
+import { signIn } from '../actions/authAction';
 
 class SocialLogin extends Component {
     state = { 
@@ -31,22 +31,27 @@ class SocialLogin extends Component {
     }
 
     onLoginAttempt = () => {
-        this.props.authAction(this.state)
+        this.props.signIn(this.state)
     }
 
     renderAuthorization = () => {
-        if(this.props.firebase.isEmpty){
+        const { auth } = this.props;
+        const authError = this.props.authError.authError ? <p>{this.props.authError.authError}</p> : false;
+        if(!auth.uid){
             return (
                 <Segment placeholder>
                     <Grid columns={2} relaxed='very' stackable>
                     
                     <Grid.Column>
+                        <div>
                         <Form onSubmit={this.onLoginAttempt}>
                             <Form.Input onChange={this.onInputChange} name='email'  icon='mail' iconPosition='left' label='Email' placeholder='email' />
                             <Form.Input onChange={this.onInputChange} name='password' icon='lock' iconPosition='left' label='Password' placeholder='password' type='password' />
                     
-                            <Button content='Login' primary />
+                            <Button content='Login' primary />                  
                         </Form>
+                        {authError}
+                        </div>
                     </Grid.Column>
                 
                     <Grid.Column verticalAlign='middle'>
@@ -75,8 +80,15 @@ class SocialLogin extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        firebase: state.firebase.auth
+        auth: state.firebase.auth,
+        authError: state.auth
     }
 }
 
-export default connect(mapStateToProps, { authAction })(SocialLogin);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signIn: (credentials) => dispatch(signIn(credentials))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(SocialLogin);
