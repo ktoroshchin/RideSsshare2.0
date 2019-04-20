@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import SingleReservation from './SingleReservation'
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect} from 'react-redux-firebase';
 import { Container } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+
+//Components
+import SingleReservation from './SingleReservation'
+
 
 class DisplayReservations extends Component {
 
@@ -30,7 +34,11 @@ class DisplayReservations extends Component {
     }
 
     render() {
-        if(this.props.reservations === undefined){
+        const { reservations } = this.props;
+        const { auth } = this.props;
+
+        if(!auth.uid) return <Redirect to='/signin'/>
+        else if(reservations === undefined){
             return <div>Loading...</div>
         }
         return (
@@ -43,7 +51,8 @@ class DisplayReservations extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        reservations: state.firestore.ordered.reservations
+        reservations: state.firestore.ordered.reservations,
+        auth: state.firebase.auth
     }
 }
 

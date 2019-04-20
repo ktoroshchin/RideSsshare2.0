@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom';
-import {  Grid, Segment, Form, Divider, Button, Message } from 'semantic-ui-react';
+import {  Grid, Segment, Form, Divider, Button } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
 import { connect } from 'react-redux';
@@ -48,8 +48,10 @@ class SocialLogin extends Component {
                             <Form.Input onChange={this.onInputChange} name='email'  icon='mail' iconPosition='left' label='Email' placeholder='email' />
                             <Form.Input onChange={this.onInputChange} name='password' icon='lock' iconPosition='left' label='Password' placeholder='password' type='password' />
                     
-                            <Button content='Login' primary />                  
+                            <Button content='Login' fluid primary />                  
                         </Form>
+                            <br/>
+                            <Button content='Sign Up' fluid positive />
                         {authError}
                         </div>
                     </Grid.Column>
