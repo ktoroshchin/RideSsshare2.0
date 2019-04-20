@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import {  Grid, Segment, Form, Divider, Button } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
@@ -51,7 +51,7 @@ class SocialLogin extends Component {
                             <Button content='Login' fluid primary />                  
                         </Form>
                             <br/>
-                            <Button content='Sign Up' fluid positive />
+                            <Link to='/signup'><Button content='Sign Up' fluid positive /></Link>
                         {authError}
                         </div>
                     </Grid.Column>
