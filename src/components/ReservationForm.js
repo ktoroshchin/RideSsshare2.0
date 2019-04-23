@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createReservation } from '../actions/createReservation';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Dropdown, Form, Input, Button } from 'semantic-ui-react';
+import { Dropdown, Form, Input, Icon, Button } from 'semantic-ui-react';
 class ReservationForm extends Component {
     state = {
         driver_id:'',
@@ -57,43 +57,43 @@ class ReservationForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
                     <label>Choose driver:</label>
-                    <Dropdown onChange={this.handleInputChange} placeholder='Choose driver' name='driver_id' clearable selection options={this.renderDrivers()}/>    
+                    <Dropdown onChange={this.handleInputChange} icon={<Icon color='red' name='user'/>} iconPosition='left' name='driver_id' clearable selection options={this.renderDrivers()}/>    
                 </Form.Field>
                 <Form.Field>
                     <label>Name</label>
-                    <Input onChange={this.handleInputChange} name="name" value={this.state.name} placeholder="Name"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='info'/>} iconPosition='left' name="name" value={this.state.name}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Email</label>
-                    <Input onChange={this.handleInputChange} name="email" value={this.state.email} placeholder="Email"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='mail'/>} iconPosition='left' name="email" value={this.state.email}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Phone number</label>
-                    <Input onChange={this.handleInputChange} name="phone_number" value={this.state.phone_number} placeholder="phone number"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='phone'/>} iconPosition='left' name="phone_number" value={this.state.phone_number}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Departure date</label>
-                    <Input onChange={this.handleInputChange} name="departure_date" value={this.state.departure_date} placeholder="departure date"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='calendar alternate outline'/>} iconPosition='left' name="departure_date" value={this.state.departure_date}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Destination</label>
-                    <Input onChange={this.handleInputChange} name="destination" value={this.state.destination} placeholder="destination"/>
+                    <Input onChange={this.handleInputChange} name="destination" value={this.state.destination} icon={<Icon color='red' name='point'/>} iconPosition='left'/>
                 </Form.Field>
                 <Form.Field>
                     <label>Departure from</label>
-                    <Input onChange={this.handleInputChange} name="departure_from" value={this.state.departure_from} placeholder="departure from"/>
+                    <Input onChange={this.handleInputChange} name="departure_from" value={this.state.departure_from} icon={<Icon color='red' name='point'/>} iconPosition='left'/>
                 </Form.Field>
                 <Form.Field>
                     <label>Departure time</label>
-                    <Input onChange={this.handleInputChange} name="departure_time" value={this.state.departure_time} placeholder="departure time"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='time'/>} iconPosition='left' name="departure_time" value={this.state.departure_time}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Number of passenger</label>
-                    <Input onChange={this.handleInputChange} name="number_of_passengers" value={this.state.number_of_passengers} placeholder="number of passengers"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='users'/>} iconPosition='left' name="number_of_passengers" value={this.state.number_of_passengers}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Comments</label>
-                    <Input onChange={this.handleInputChange} name="comments" value={this.state.comments} placeholder="comments"/>
+                    <Input onChange={this.handleInputChange} icon={<Icon color='red' name='comment'/>} iconPosition='left' name="comments" value={this.state.comments}/>
                 </Form.Field>
                 <Button type="submit">Submit</Button>
             </Form>

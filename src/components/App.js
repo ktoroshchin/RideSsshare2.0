@@ -18,8 +18,8 @@ const App = () => {
                 <Header />
                     <Switch>
                         <Route path='/' exact component={Welcome}/>
-                        <Route path='/signin' exact component={Login}/>
-                        <Route path='/signup' exact component={SignUp}/>
+                        <Route path='/sign-in' exact component={Login}/>
+                        <Route path='/sign-up' exact component={SignUp}/>
                         <Route path='/reservation-form' exact component={ReservationForm}/>
                         <Route path='/reservation/details/:id' exact component={ReservationDetails}/>
                         <Route path='/reservations/user/:driverId' exact component={DisplayReservations}/>

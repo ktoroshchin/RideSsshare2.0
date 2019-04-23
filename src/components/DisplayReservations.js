@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Container } from 'semantic-ui-react';
+import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
 //Components
@@ -34,14 +34,17 @@ class DisplayReservations extends Component {
     }
 
     render() {
-        // console.log(this.props.match.params.userId)
         const { reservations } = this.props;
         const { auth } = this.props;
 
-        if(!auth.uid) return <Redirect to='/signin'/>
-        else if(reservations === undefined){
-            return <div>Loading...</div>
-        }
+        if(!auth.uid) return <Redirect to='/sign-in'/>
+        // else if(!reservations){
+        //     return (
+        //         <Dimmer active>
+        //             <Loader>Loading</Loader>
+        //         </Dimmer>
+        //     )
+        // }
         return (
             <Container>
                 {this.renderReservations()}

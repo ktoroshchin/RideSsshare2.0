@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Modal, Button, Grid } from  'semantic-ui-react';
 
 class Welcome extends Component {
@@ -14,10 +15,10 @@ class Welcome extends Component {
           <Grid>
             <Grid.Row columns={2}>
               <Grid.Column>
-                <Button fluid size='massive' inverted color='green'>I need a ride</Button>
+                <Link to='reservation-form'><Button fluid size='massive' inverted color='green'>I need a ride</Button></Link>
               </Grid.Column>
               <Grid.Column>
-                <Button fluid size='massive' inverted color='blue'>I am a driver</Button>
+                <Link to='sign-in'><Button fluid size='massive' inverted color='blue'>I am a driver</Button></Link>
               </Grid.Column>
             </Grid.Row>
           </Grid>

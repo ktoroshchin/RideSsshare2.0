@@ -40,7 +40,7 @@ class SignUp extends Component {
                         
                                 <Button content='Sign Up' fluid positive />
                                 <br/>
-                                <Link to='/signin'><Button content='Cancel' fluid negative /></Link>                  
+                                <Link to='/sign-in'><Button content='Cancel' fluid negative /></Link>                  
                             </Form>
                         </Modal.Content>
                     </Modal>

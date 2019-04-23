@@ -56,7 +56,7 @@ class SocialLogin extends Component {
                             <Button content='Login' fluid primary />                  
                         </Form>
                             <br/>
-                            <Link to='/signup'><Button content='Sign Up' fluid positive /></Link>
+                            <Link to='/sign-up'><Button content='Sign Up' fluid positive /></Link>
                         {authError}
                         </div>
                     </Grid.Column>
