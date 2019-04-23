@@ -36,7 +36,7 @@ class SignUp extends Component {
                                 <Form.Input onChange={this.onInputChange} name='email'  icon='mail' iconPosition='left' label='Email' placeholder='email' />
                                 <Form.Input onChange={this.onInputChange} name='password' icon='lock' iconPosition='left' label='Password' placeholder='password' type='password' />
                                 <Form.Input onChange={this.onInputChange} name='first_name'  label='First Name' placeholder='First Name' />
-                                <Form.Input onChange={this.onInputChange} name='last_name' label='Last Name' placeholder='Last Name' type='password' />
+                                <Form.Input onChange={this.onInputChange} name='last_name' label='Last Name' placeholder='Last Name' />
                         
                                 <Button content='Sign Up' fluid positive />
                                 <br/>

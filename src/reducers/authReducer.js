@@ -19,6 +19,12 @@ const authReducer = (state = initState , action) => {
         case 'SIGNUP_ERROR':
             console.log('signup error');
             return {...state, authError: action.payload.err}
+        case 'CR_USER_ON_SOCIAL_LOGIN_SUCCESS':
+            console.log('successfully created user on social login');
+            return {...state, authError: null}
+        case 'CR_USER_ON_SOCIAL_LOGIN_ERROR':
+            console.log('create user on social login error');
+            return {...state, authError: action.payload.err}
         default:
             return state;
     }

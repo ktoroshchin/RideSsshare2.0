@@ -33,6 +33,22 @@ export const signUp = (newUser) => {
     }
 }
 
+export const crDbUserOnSocialLogin = (user) => {
+    return (dispatch, getState, { getFirestore }) => {
+        const userFullName = user.displayName.split(" ");
+        const firestore = getFirestore();
+        firestore.collection('users').doc(user.uid).set({
+            firstName: userFullName[0],
+            lastName: userFullName[1],
+            initials: userFullName[0][0] + userFullName[1][0]
+        })
+        .then(() => { dispatch({ type: 'CR_USER_ON_SOCIAL_LOGIN_SUCCESS'}) })
+        .catch((err) => { dispatch({ type: 'CR_USER_ON_SOCIAL_LOGIN_ERROR' }) })
+    }
+}
+
+
+
 
 
 

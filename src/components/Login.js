@@ -4,7 +4,10 @@ import {  Grid, Segment, Form, Divider, Button } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
 import { connect } from 'react-redux';
+
+//action creators
 import { signIn } from '../actions/authAction';
+import { crDbUserOnSocialLogin } from '../actions/authAction';
 
 class SocialLogin extends Component {
     state = { 
@@ -20,7 +23,9 @@ class SocialLogin extends Component {
             fbConfig.auth.EmailAuthProvider.PROVIDER_ID
         ],
         callbacks: {
-            signInSuccessWithAuthResult: false
+            signInSuccessWithAuthResult: ({user}) => {
+                this.props.crDbUserOnSocialLogin(user)
+            }
         }       
     };
 
@@ -69,7 +74,7 @@ class SocialLogin extends Component {
             )        
         }
         return(
-            <Redirect to='/displayreservations'/>
+            <Redirect to={`/reservations/user/${auth.uid}`}/>
         )
     }
 
@@ -89,7 +94,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signIn: (credentials) => dispatch(signIn(credentials))
+        signIn: (credentials) => dispatch(signIn(credentials)),
+        crDbUserOnSocialLogin: (user) => dispatch(crDbUserOnSocialLogin(user))
     }
 }
 

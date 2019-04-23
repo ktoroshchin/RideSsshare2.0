@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 //components
 import ReservationForm from './ReservationForm';
 import Header from './Header';
-import SocialLogin from './SocialLogin';
+import Login from './Login';
 import SignUp from './SignUp';
 import Welcome from './Welcome';
 import ReservationDetails from './ReservationDetails'
@@ -18,11 +18,11 @@ const App = () => {
                 <Header />
                     <Switch>
                         <Route path='/' exact component={Welcome}/>
-                        <Route path='/signin' exact component={SocialLogin}/>
+                        <Route path='/signin' exact component={Login}/>
                         <Route path='/signup' exact component={SignUp}/>
-                        <Route path='/reservation' exact component={ReservationForm}/>
+                        <Route path='/reservation-form' exact component={ReservationForm}/>
                         <Route path='/reservation/details/:id' exact component={ReservationDetails}/>
-                        <Route path='/displayreservations' exact component={DisplayReservations}/>
+                        <Route path='/reservations/user/:driverId' exact component={DisplayReservations}/>
                     </Switch>
                 </BrowserRouter>
             </div>

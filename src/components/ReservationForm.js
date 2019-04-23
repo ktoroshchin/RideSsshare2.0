@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { createReservation } from '../actions/createReservation';
+import { firestoreConnect } from 'react-redux-firebase';
+import { Dropdown, Form, Input, Button } from 'semantic-ui-react';
 class ReservationForm extends Component {
     state = {
         driver_id:'',
@@ -15,67 +18,93 @@ class ReservationForm extends Component {
         comments: ''
     }
 
-    handleInputChange = (e) => {
+    handleInputChange = (e,{value, name}) => {
         this.setState({
-            [e.target.name]: e.target.value
+            [name]: value
         })
     }
+
+    // handleDriverChoice = (e, {value, name}) => {
+    //     console.log(e.target)
+    //     this.setState({
+    //         [name]: value
+    //     })   
+    // }
 
     handleSubmit = (e) => { 
         e.preventDefault()
         this.props.createReservation(this.state)
     }
 
+    renderDrivers = () => {
+        const { users } = this.props;
+        const options = users.map(driver => {
+            return {
+                key: driver.id, text: driver.firstName + " " + driver.lastName, value: driver.id
+            }  
+        })
+        return options;
+    }
+
 
   render() {
+      const { users } = this.props;
+      if(!users){
+          return <div>Loading</div>
+      }
     return (
-      <div>
-            <form onSubmit={this.handleSubmit} className="ui form">
-                <div className="field">
-                    <label>Choose driver</label>
-                    <input onChange={this.handleInputChange} value={this.state.driver_id} name="driver_id" placeholder="driver"/>
-                </div>
-                <div className="field">
+
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Field>
+                    <label>Choose driver:</label>
+                    <Dropdown onChange={this.handleInputChange} placeholder='Choose driver' name='driver_id' clearable selection options={this.renderDrivers()}/>    
+                </Form.Field>
+                <Form.Field>
                     <label>Name</label>
-                    <input onChange={this.handleInputChange}  value={this.state.name} name="name" placeholder="Name"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="name" value={this.state.name} placeholder="Name"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Email</label>
-                    <input onChange={this.handleInputChange}  value={this.state.email} name="email" placeholder="email"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="email" value={this.state.email} placeholder="Email"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Phone number</label>
-                    <input onChange={this.handleInputChange}  value={this.state.phone_number} name="phone_number" placeholder="phone number"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="phone_number" value={this.state.phone_number} placeholder="phone number"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Departure date</label>
-                    <input onChange={this.handleInputChange}  value={this.state.departure_date} name="departure_date" placeholder="departure date"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="departure_date" value={this.state.departure_date} placeholder="departure date"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Destination</label>
-                    <input onChange={this.handleInputChange}  value={this.state.destination} name="destination" placeholder="destination"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="destination" value={this.state.destination} placeholder="destination"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Departure from</label>
-                    <input onChange={this.handleInputChange}  value={this.state.departure_from} name="departure_from" placeholder="departure from"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="departure_from" value={this.state.departure_from} placeholder="departure from"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Departure time</label>
-                    <input onChange={this.handleInputChange}  value={this.state.departure_time} name="departure_time" placeholder="departure time"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="departure_time" value={this.state.departure_time} placeholder="departure time"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Number of passenger</label>
-                    <input onChange={this.handleInputChange}  value={this.state.number_of_passengers} name="number_of_passengers" placeholder="number of passengers"/>
-                </div>
-                <div className="field">
+                    <Input onChange={this.handleInputChange} name="number_of_passengers" value={this.state.number_of_passengers} placeholder="number of passengers"/>
+                </Form.Field>
+                <Form.Field>
                     <label>Comments</label>
-                    <input onChange={this.handleInputChange}  value={this.state.comments} name="comments" placeholder="comments"/>
-                </div>
-                <button className="ui button" type="submit">Submit</button>
-            </form>
-      </div>
+                    <Input onChange={this.handleInputChange} name="comments" value={this.state.comments} placeholder="comments"/>
+                </Form.Field>
+                <Button type="submit">Submit</Button>
+            </Form>
     )
   }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        users: state.firestore.ordered.users
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -85,5 +114,10 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(null, mapDispatchToProps)(ReservationForm);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect([
+        {collection: 'users'} 
+    ])
+)(ReservationForm)
  

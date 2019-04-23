@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firestoreConnect} from 'react-redux-firebase';
+import { firestoreConnect } from 'react-redux-firebase';
 import { Container } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
@@ -34,6 +34,7 @@ class DisplayReservations extends Component {
     }
 
     render() {
+        // console.log(this.props.match.params.userId)
         const { reservations } = this.props;
         const { auth } = this.props;
 
@@ -49,9 +50,11 @@ class DisplayReservations extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state,ownProps) => {
+    console.log(state.firestore.ordered.reservations)
+    const { reservations = [] } = state.firestore.ordered;
     return {
-        reservations: state.firestore.ordered.reservations,
+        reservations: reservations.filter(reservation => reservation.driver_id === ownProps.match.params.driverId),
         auth: state.firebase.auth
     }
 }
