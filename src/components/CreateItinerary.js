@@ -5,6 +5,7 @@ import { Dropdown, Form, Icon, Dimmer, Loader } from 'semantic-ui-react';
 class CreateItinerary extends Component {
     state = {
         departure_from: '',
+        destination: '',
     }
 
     isFormValid = () => {
@@ -45,9 +46,8 @@ class CreateItinerary extends Component {
                         icon={<Icon color='red' name='marker'/>} 
                         iconPosition='left' 
                         name='destination'
-                        value={this.state.name}       
+                        value={this.state.destination}       
                     />
-                    {formValidations.name_error ? <span className='error-message'>{formValidations.name_error}</span> : null}
                 </Form.Field>
                
                 <Form.Field>
