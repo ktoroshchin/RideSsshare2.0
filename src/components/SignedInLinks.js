@@ -6,12 +6,18 @@ import { signOut } from '../actions/authAction';
 
 const signedInLinks = (props) => {
     const { displayName, photoURL } = props.firebase;
-    return (          
-        <Menu.Item position='right'>
-            <h4>Hello, {displayName}</h4>
-            <Image src={photoURL} size='mini' circular/>
-            <Link to='/'><Button onClick={props.signOut}>Sign Out</Button></Link>
-        </Menu.Item>
+    return (
+        <Menu.Menu position='right'>    
+            <Menu.Item >
+                <h4>Hello, {displayName}</h4>
+                <Image src={photoURL} size='mini' circular/> 
+                <Link to='/'><Button basic inverted>Create itinerary</Button></Link>
+            </Menu.Item>
+        
+            <Menu.Item position='right'>
+                <Link to='/'><Button basic inverted onClick={props.signOut}>Sign Out</Button></Link>
+            </Menu.Item>
+        </Menu.Menu>
     )
 };
 

@@ -7,7 +7,8 @@ const initState = {
     departure_from_error:null,
     departure_time_error:null,
     departure_date_error:null,
-    number_of_passengers_error:null
+    number_of_passengers_error:null,
+    comments_error: null
 }
 
 const reservationFormReducer = (state=initState, action) => {
@@ -30,7 +31,9 @@ const reservationFormReducer = (state=initState, action) => {
             return {...state, departure_date_error: null};
         case 'NUM_OF_PASSENGERS_VALID':
             return {...state, number_of_passengers_error: null};
-       
+        case 'COMMENTS_VALID':
+            return {...state, comments_error: null};
+
         case 'DRIVER_ID_INVALID':
             return {...state, driver_id_error: action.payload};
         case 'CLIENT_NAME_INVALID':
@@ -49,6 +52,8 @@ const reservationFormReducer = (state=initState, action) => {
             return {...state, departure_date_error: action.payload};
         case 'NUM_OF_PASSENGERS_INVALID':
             return {...state, number_of_passengers_error: action.payload};   
+        case 'COMMENTS_INVALID':
+            return {...state, comments_error: action.payload};
         default:
             return state
     }

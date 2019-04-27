@@ -89,7 +89,7 @@ export const numberOfPassValidator = (reservation) => {
 
 export const commentsValidator = (reservation) => {
     return(dispatch) => {
-        if(reservation.comments !== ''){
+        if(reservation.comments.length < 250){
             return dispatch({type: 'COMMENTS_VALID'})
         }
         return dispatch({type: 'COMMENTS_INVALID', payload: 'Max length is 250 characters'})

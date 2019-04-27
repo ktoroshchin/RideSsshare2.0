@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'semantic-ui-css/semantic.min.css';
+
 import { createStore, applyMiddleware,  compose } from 'redux';
 import { Provider } from 'react-redux';
 import { reduxFirestore, getFirestore } from 'redux-firestore';
@@ -8,6 +10,8 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import fbConfig from './config/fbConfig';
 import App from './components/App';
+
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

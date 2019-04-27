@@ -6,3 +6,15 @@
 .react-datepicker__input-container{
     displaY: block !important;
 }
+
+.error-message{
+    color: red;
+}
+
+.ui.form .field{
+    margin-bottom: 2%;
+}
+
+.ui.form .field .error{
+    margin-bottom: 0px;
+}

@@ -1,46 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { createReservation } from '../actions/createReservation';
 import { Dropdown, Form, Icon, Dimmer, Loader } from 'semantic-ui-react';
 
-//styles
-import '../styles/ReservationForm.css';
 
-//reservation form helpers
-import { renderNumOfPass, renderTimeOptions, renderDestinations } from '../services/reservationFormHelpers';
-
-//date picker package
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-
-import { 
-    driverIdValidator, 
-    clientNameValidator,
-    clientEmailValidator,
-    clientPhoneValidator,
-    destinationValidator,
-    departureFromValidator,
-    departureTimeValidator,
-    departureDateValidator,
-    numberOfPassValidator,
-    commentsValidator
-} from '../actions/reservationFormValidation';
-
-
-class ReservationForm extends Component {
+class CreateItinerary extends Component {
     state = {
-        driver_id:'',
-        name:'',
-        email: '',
-        phone_number: '',
-        destination: '',
         departure_from: '',
-        departure_time: '',
-        departure_date: new Date(),
-        number_of_passengers: '',
-        comments: '',
     }
 
     isFormValid = () => {
@@ -55,73 +19,32 @@ class ReservationForm extends Component {
         })
     }
 
-    handleDateChange = (date) => {
-        this.setState({
-            departure_date: date
-        })
-    }
-
     handleSubmit = (e) => { 
         e.preventDefault()
-        const { formValidations } = this.props;
-        let foundErrors = Object.keys(formValidations).filter((value) => {
-            return formValidations[value] !== null;
-        })
-        if(foundErrors.length === 0){
-            this.props.createReservation(this.state)
-        }
+       
     }
-
-    renderDrivers = () => {
-        const { users } = this.props;
-        const options = users.map(driver => {
-            return {
-                key: driver.id, text: driver.firstName + " " + driver.lastName, value: driver.id
-            }  
-        })
-        return options;
-    }
-
-    
-
-
 
   render() {
-      const { users } = this.props;
-      const { formValidations } = this.props;
-        if(!users){
-            return (
-                <Dimmer active>
-                    <Loader>Loading</Loader>
-                </Dimmer>
-            )
-        }
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
-                    <label>Choose driver:</label>
-                    <Dropdown 
-                        onBlur={() => this.props.driverIdValidator(this.state)} 
+                    <label>Departure from:</label>
+                    <Form.Input 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='user'/>}  
-                        name='driver_id'
-                        error={formValidations.driver_id_error ? true : false}
-                        clearable 
-                        selection 
-                        options={this.renderDrivers()}
-                    />
-                    {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
+                        icon={<Icon color='red' name='marker'/>} 
+                        iconPosition='left' 
+                        name='departure_from'
+                        value={this.state.departure_from}       
+                    /> 
                 </Form.Field>
                
                 <Form.Field>
-                    <label>Name</label>
+                    <label>Destination</label>
                     <Form.Input 
-                        onBlur={()=> this.props.clientNameValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='info'/>} 
+                        icon={<Icon color='red' name='marker'/>} 
                         iconPosition='left' 
-                        name="name"
-                        error={formValidations.name_error ? true : false}                     
+                        name='destination'
                         value={this.state.name}       
                     />
                     {formValidations.name_error ? <span className='error-message'>{formValidations.name_error}</span> : null}
@@ -253,34 +176,4 @@ class ReservationForm extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        users: state.firestore.ordered.users,
-        formValidations: state.formValidations
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createReservation: (reservation) => dispatch(createReservation(reservation)),
-        driverIdValidator: (reservation) => dispatch(driverIdValidator(reservation)),
-        clientNameValidator: (reservation) => dispatch(clientNameValidator(reservation)),
-        clientEmailValidator: (reservation) => dispatch(clientEmailValidator(reservation)),
-        clientPhoneValidator: (reservation) => dispatch(clientPhoneValidator(reservation)),
-        destinationValidator: (reservation) => dispatch(destinationValidator(reservation)),
-        departureFromValidator: (reservation) => dispatch(departureFromValidator(reservation)),
-        departureTimeValidator: (reservation) => dispatch(departureTimeValidator(reservation)),
-        departureDateValidator: (reservation) => dispatch(departureDateValidator(reservation)),
-        numberOfPassValidator: (reservation) => dispatch(numberOfPassValidator(reservation)),
-        commentsValidator: (reservation) => dispatch(commentsValidator(reservation))
-    }
-}
-
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([
-        {collection: 'users'} 
-    ])
-)(ReservationForm)
- 
+export default CreateItinerary;
