@@ -86,6 +86,7 @@ class SocialLogin extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.firebase.auth)
     return {
         auth: state.firebase.auth,
         authError: state.auth
