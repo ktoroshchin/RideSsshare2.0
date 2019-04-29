@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import { signOut } from '../actions/authAction';
 
 const signedInLinks = (props) => {
-    const { displayName, photoURL } = props.firebase;
+    const { displayName, photoURL, uid } = props.firebase;
     return (
         <Menu.Menu position='right'>    
             <Menu.Item >
                 <h4>Hello, {displayName}</h4>
                 <Image src={photoURL} size='mini' circular/> 
-                <Link to='/'><Button basic inverted>Create itinerary</Button></Link>
+                <Link to={`/user/reservations/create-itinerary/${uid}`}><Button basic inverted>Create itinerary</Button></Link>
             </Menu.Item>
         
             <Menu.Item position='right'>

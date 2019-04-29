@@ -9,6 +9,7 @@ import SignUp from './SignUp';
 import Welcome from './Welcome';
 import ReservationDetails from './ReservationDetails'
 import DisplayReservations from './DisplayReservations';
+import CreateItinerary from './CreateItinerary';
 
 const App = () => {
     return (
@@ -21,8 +22,9 @@ const App = () => {
                         <Route path='/sign-in' exact component={Login}/>
                         <Route path='/sign-up' exact component={SignUp}/>
                         <Route path='/reservation-form' exact component={ReservationForm}/>
-                        <Route path='/reservation/details/:id' exact component={ReservationDetails}/>
-                        <Route path='/reservations/user/:driverId' exact component={DisplayReservations}/>
+                        <Route path='/user/reservation-details/:id' exact component={ReservationDetails}/>
+                        <Route path='/user/reservations/:driverId' exact component={DisplayReservations}/>
+                        <Route path='/user/reservations/create-itinerary/:driverId' exact component={CreateItinerary}/>
                     </Switch>
                 </BrowserRouter>
             </div>

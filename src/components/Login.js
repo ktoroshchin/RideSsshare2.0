@@ -74,7 +74,7 @@ class SocialLogin extends Component {
             )        
         }
         return(
-            <Redirect to={`/reservations/user/${auth.uid}`}/>
+            <Redirect to={`/user/reservations/${auth.uid}`}/>
         )
     }
 

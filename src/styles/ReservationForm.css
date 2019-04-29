@@ -18,3 +18,7 @@
 .ui.form .field .error{
     margin-bottom: 0px;
 }
+
+i.icon.icon-color{
+    color:#ed9393;
+}

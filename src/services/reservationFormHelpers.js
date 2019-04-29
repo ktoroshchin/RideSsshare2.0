@@ -18,6 +18,15 @@ const timeOptions = [
     { key: 2, text: '6pm', value: '6pm' }
 ]
 
+const daysOfOperation = [
+    { key: 0, text: 'Mon', value: 'Mon' },
+    { key: 1, text: 'Tue', value: 'Tue' },
+    { key: 2, text: 'Wed', value: 'Wed' },
+    { key: 3, text: 'Thu', value: 'Thu' },
+    { key: 4, text: 'Fri', value: 'Fri' },
+    { key: 5, text: 'Sat', value: 'Sat' },
+    { key: 6, text: 'Sun', value: 'Sun' }
+]
 
 export const renderNumOfPass = () => {
     const options = numOfPassOptions.map(num => {
@@ -41,6 +50,15 @@ export const renderDestinations = () => {
     const options = destinationOptions.map(city => {
         return {
             key: city.key, text: city.text, value: city.value
+        }
+    })
+    return options;
+}
+
+export const renderDaysOfOperation = () => {
+    const options = daysOfOperation.map(day => {
+        return {
+            key: day.key, text: day.text, value: day.value
         }
     })
     return options;

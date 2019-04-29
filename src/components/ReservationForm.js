@@ -64,11 +64,12 @@ class ReservationForm extends Component {
     handleSubmit = (e) => { 
         e.preventDefault()
         const { formValidations } = this.props;
+        console.log(formValidations)
         let foundErrors = Object.keys(formValidations).filter((value) => {
             return formValidations[value] !== null;
         })
         if(foundErrors.length === 0){
-            this.props.createReservation(this.state)
+            console.log("Found no errors will submit")
         }
     }
 
@@ -103,7 +104,7 @@ class ReservationForm extends Component {
                     <Dropdown 
                         onBlur={() => this.props.driverIdValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='user'/>}  
+                        icon={<i className="icon-color mail icon"></i>}  
                         name='driver_id'
                         error={formValidations.driver_id_error ? true : false}
                         clearable 
@@ -171,7 +172,7 @@ class ReservationForm extends Component {
                     <Dropdown 
                         onBlur={() => this.props.destinationValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='marker'/>}  
+                        icon={<i className="icon-color marker icon"></i>}  
                         name='destination'
                         error={formValidations.destination_error ? true : false} 
                         clearable 
@@ -186,7 +187,7 @@ class ReservationForm extends Component {
                     <Dropdown 
                         onBlur={() => this.props.departureFromValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='marker'/>}  
+                        icon={<i className="icon-color marker icon"></i>}  
                         name='departure_from'
                         error={formValidations.departure_from_error ? true : false} 
                         clearable 
@@ -201,7 +202,7 @@ class ReservationForm extends Component {
                     <Dropdown 
                         onBlur={() => this.props.departureTimeValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='time'/>} 
+                        icon={<i className="icon-color time icon"></i>} 
                         name="departure_time"
                         error={formValidations.departure_time_error ? true : false} 
                         value={this.state.departure_time} 
@@ -217,7 +218,7 @@ class ReservationForm extends Component {
                     <Dropdown 
                         onBlur={() => this.props.numberOfPassValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='users'/>} 
+                        icon={<i className="icon-color users icon"></i>} 
                         name="number_of_passengers"
                         error={formValidations.number_of_passengers_error ? true : false} 
                         value={this.state.number_of_passengers} 

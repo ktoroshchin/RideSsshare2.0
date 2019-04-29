@@ -1,16 +1,34 @@
 import React, { Component } from 'react'
-import { Dropdown, Form, Icon, Dimmer, Loader } from 'semantic-ui-react';
-
-
+import { Dropdown, Form, Icon } from 'semantic-ui-react';
+import { createItinerary } from '../actions/createItinerary';
+import { renderDaysOfOperation } from '../services/reservationFormHelpers';
+import { connect } from 'react-redux';
+import '../styles/CreateItinerary.css'
 class CreateItinerary extends Component {
     state = {
         departure_from: '',
         destination: '',
+        departure_time: '',
+        days_of_operation: '',
+        pick_up_address: '',
+        drop_off_address: '',
+        notes: '',
+        price: '',
     }
 
     isFormValid = () => {
-        const { driver_id, name, email, phone_number, destination, departure_from, departure_time, number_of_passengers } = this.state;
-        return driver_id && name && email && phone_number && destination && departure_from && departure_time && number_of_passengers
+        const { 
+            departure_from, 
+            destination, 
+            departure_time, 
+            days_of_operation, 
+            pick_up_address, 
+            drop_off_address, 
+            notes,
+            price 
+        } = this.state;
+
+        return departure_from && destination && departure_time && days_of_operation && pick_up_address && drop_off_address && notes && price 
     }
 
 
@@ -22,15 +40,17 @@ class CreateItinerary extends Component {
 
     handleSubmit = (e) => { 
         e.preventDefault()
-       
+       this.props.createItinerary(this.state)
     }
+
+ 
 
   render() {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
                     <label>Departure from:</label>
-                    <Form.Input 
+                    <Form.Input     
                         onChange={this.handleInputChange} 
                         icon={<Icon color='red' name='marker'/>} 
                         iconPosition='left' 
@@ -51,118 +71,71 @@ class CreateItinerary extends Component {
                 </Form.Field>
                
                 <Form.Field>
-                    <label>Email</label>
+                    <label>Departure time:</label>
                     <Form.Input 
-                        onBlur={() => this.props.clientEmailValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='mail'/>} 
-                        iconPosition='left' 
-                        name="email"
-                        error={formValidations.email_error ? true : false} 
-                        value={this.state.email}
-                    />
-                    {formValidations.email_error ? <span className="error-message">{formValidations.email_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Phone number</label>
-                    <Form.Input 
-                        onBlur={() => this.props.clientPhoneValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='phone'/>} 
-                        iconPosition='left' 
-                        name="phone_number"
-                        error={formValidations.phone_number_error ? true : false} 
-                        value={this.state.phone_number}
-                    />
-                    {formValidations.phone_number_error ? <span className='error-message'>{formValidations.phone_number_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Departure date</label>
-                    <DatePicker
-                        onBlur={()=> this.props.departureDateValidator(this.state)}
-                        selected={this.state.departure_date}
-                        onChange={this.handleDateChange}
-                        error={formValidations.departure_date_error ? true : false}
-                    />
-                    {formValidations.departure_date_error ? <span className='error-message'>{formValidations.departure_date_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Destination</label>
-                    <Dropdown 
-                        onBlur={() => this.props.destinationValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='marker'/>}  
-                        name='destination'
-                        error={formValidations.destination_error ? true : false} 
-                        clearable 
-                        selection 
-                        options={renderDestinations()}
-                    /> 
-                    {formValidations.destination_error ? <span className='error-message'>{formValidations.destination_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Departure from</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureFromValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='marker'/>}  
-                        name='departure_from'
-                        error={formValidations.departure_from_error ? true : false} 
-                        clearable 
-                        selection 
-                        options={renderDestinations()}
-                    />
-                    {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Departure time</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureTimeValidator(this.state)} 
                         onChange={this.handleInputChange} 
                         icon={<Icon color='red' name='time'/>} 
-                        name="departure_time"
-                        error={formValidations.departure_time_error ? true : false} 
-                        value={this.state.departure_time} 
-                        options={renderTimeOptions()} 
-                        selection 
-                        clearable 
+                        iconPosition='left' 
+                        name='departure_time'
+                        value={this.state.departure_time}
                     />
-                    {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
                 </Form.Field>
 
                 <Form.Field>
-                    <label>Number of passenger</label>
+                    <label>Days of operation</label>
                     <Dropdown 
-                        onBlur={() => this.props.numberOfPassValidator(this.state)} 
                         onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='users'/>} 
-                        name="number_of_passengers"
-                        error={formValidations.number_of_passengers_error ? true : false} 
-                        value={this.state.number_of_passengers} 
-                        options={renderNumOfPass()} 
+                        icon={<i className="icon-color calendar icon"></i>}  
+                        name='days_of_operation'
+                        multiple
                         selection 
-                        clearable 
-                    />
-                    {formValidations.number_of_passengers_error ? <span className='error-message'>{formValidations.number_of_passengers_error}</span> : null}
+                        options={renderDaysOfOperation()}
+                    /> 
                 </Form.Field>
 
                 <Form.Field>
-                    <label>Comments</label>
+                    <label>Pick-up address</label>
                     <Form.Input 
-                        onBlur={() => this.props.commentsValidator(this.state)} 
+                        onChange={this.handleInputChange} 
+                        icon={<Icon color='red' name='home'/>} 
+                        iconPosition='left' 
+                        name='pick_up_address'
+                        value={this.state.pick_up_address}
+                    />
+                </Form.Field>
+    
+                <Form.Field>
+                    <label>Drop-off address</label>
+                    <Form.Input 
+                        onChange={this.handleInputChange} 
+                        icon={<Icon color='red' name='building'/>} 
+                        iconPosition='left' 
+                        name='drop_off_address'
+                        value={this.state.drop_off_address}
+                    />
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Notes</label>
+                    <Form.Input 
                         onChange={this.handleInputChange} 
                         icon={<Icon color='red' name='comment'/>} 
                         iconPosition='left' 
-                        name="comments"
-                        error={formValidations.comments_error ? true : false} 
-                        value={this.state.comments}
+                        name='notes'
+                        value={this.state.notes}
+                        placeholder='Here you can leave some notes for your passengers. Tell them about your car, experience and services you provide.'
                     />
-                    {formValidations.comments_error ? <span className='error-message'>{formValidations.comments_error}</span> : null}
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Price</label>
+                    <Form.Input 
+                        onChange={this.handleInputChange} 
+                        icon={<Icon color='red' name='dollar sign'/>} 
+                        iconPosition='left' 
+                        name='price'
+                        value={this.state.price}
+                    />
                 </Form.Field>
 
                 <Form.Button 
@@ -176,4 +149,10 @@ class CreateItinerary extends Component {
     }
 }
 
-export default CreateItinerary;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createItinerary: (itinerary) => dispatch(createItinerary(itinerary))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(CreateItinerary);
