@@ -11,9 +11,13 @@ const signedInLinks = (props) => {
             <Menu.Item >
                 <h4>Hello, {displayName}</h4>
                 <Image src={photoURL} size='mini' circular/> 
-                <Link to={`/user/reservations/create-itinerary/${uid}`}><Button basic inverted>Create itinerary</Button></Link>
+                <Link to={`/user/create-itinerary/${uid}`}><Button basic inverted>Create itinerary</Button></Link>
             </Menu.Item>
         
+            <Menu.Item position='right'>
+                <Link to={`/user/reservations/${uid}`}><Button basic inverted>Reservations</Button></Link>
+            </Menu.Item>
+
             <Menu.Item position='right'>
                 <Link to='/'><Button basic inverted onClick={props.signOut}>Sign Out</Button></Link>
             </Menu.Item>

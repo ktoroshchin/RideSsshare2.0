@@ -9,7 +9,7 @@ import { Dropdown, Form, Icon, Dimmer, Loader } from 'semantic-ui-react';
 import '../styles/ReservationForm.css';
 
 //reservation form helpers
-import { renderNumOfPass, renderTimeOptions, renderDestinations } from '../services/reservationFormHelpers';
+import { renderNumOfPass, renderTimeOptions, renderDestinationOptions, renderDepartures } from '../services/reservationFormHelpers';
 
 //date picker package
 import DatePicker from "react-datepicker";
@@ -41,6 +41,7 @@ class ReservationForm extends Component {
         departure_date: new Date(),
         number_of_passengers: '',
         comments: '',
+        driver_itineraries: []
     }
 
     isFormValid = () => {
@@ -75,7 +76,7 @@ class ReservationForm extends Component {
 
     renderDrivers = () => {
         const { users } = this.props;
-        const options = users.map(driver => {
+        const options = users.map((driver,index, arr) => {
             return {
                 key: driver.id, text: driver.firstName + " " + driver.lastName, value: driver.id
             }  
@@ -84,9 +85,6 @@ class ReservationForm extends Component {
     }
 
     
-
-
-
   render() {
       const { users } = this.props;
       const { formValidations } = this.props;
@@ -112,6 +110,82 @@ class ReservationForm extends Component {
                         options={this.renderDrivers()}
                     />
                     {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Departure from</label>
+                    <Dropdown 
+                        onBlur={() => this.props.departureFromValidator(this.state)} 
+                        onChange={this.handleInputChange} 
+                        icon={<i className="icon-color marker icon"></i>}  
+                        name='departure_from'
+                        error={formValidations.departure_from_error ? true : false} 
+                        clearable 
+                        selection
+                        options={renderDepartures(this.props.users, this.state.driver_id)}
+                        
+                    />
+                    {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Destination</label>
+                    <Dropdown 
+                        onBlur={() => this.props.destinationValidator(this.state)} 
+                        onChange={this.handleInputChange} 
+                        icon={<i className="icon-color marker icon"></i>}  
+                        name='destination'
+                        error={formValidations.destination_error ? true : false} 
+                        clearable 
+                        selection
+                        options={renderDestinationOptions()}
+                         
+                        
+                    /> 
+                    {formValidations.destination_error ? <span className='error-message'>{formValidations.destination_error}</span> : null}
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Departure date</label>
+                    <DatePicker
+                        onBlur={()=> this.props.departureDateValidator(this.state)}
+                        selected={this.state.departure_date}
+                        onChange={this.handleDateChange}
+                        error={formValidations.departure_date_error ? true : false}
+                    />
+                    {formValidations.departure_date_error ? <span className='error-message'>{formValidations.departure_date_error}</span> : null}
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Departure time</label>
+                    <Dropdown 
+                        onBlur={() => this.props.departureTimeValidator(this.state)} 
+                        onChange={this.handleInputChange} 
+                        icon={<i className="icon-color time icon"></i>} 
+                        name="departure_time"
+                        error={formValidations.departure_time_error ? true : false} 
+                        value={this.state.departure_time} 
+                        options={renderTimeOptions()} 
+                        selection 
+                        clearable 
+                    />
+                    {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
+                </Form.Field>
+
+                <Form.Field>
+                    <label>Number of passenger</label>
+                    <Dropdown 
+                        onBlur={() => this.props.numberOfPassValidator(this.state)} 
+                        onChange={this.handleInputChange} 
+                        icon={<i className="icon-color users icon"></i>} 
+                        name="number_of_passengers"
+                        error={formValidations.number_of_passengers_error ? true : false} 
+                        value={this.state.number_of_passengers} 
+                        options={renderNumOfPass()} 
+                        selection 
+                        clearable 
+                    />
+                    {formValidations.number_of_passengers_error ? <span className='error-message'>{formValidations.number_of_passengers_error}</span> : null}
                 </Form.Field>
                
                 <Form.Field>
@@ -157,79 +231,6 @@ class ReservationForm extends Component {
                 </Form.Field>
 
                 <Form.Field>
-                    <label>Departure date</label>
-                    <DatePicker
-                        onBlur={()=> this.props.departureDateValidator(this.state)}
-                        selected={this.state.departure_date}
-                        onChange={this.handleDateChange}
-                        error={formValidations.departure_date_error ? true : false}
-                    />
-                    {formValidations.departure_date_error ? <span className='error-message'>{formValidations.departure_date_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Destination</label>
-                    <Dropdown 
-                        onBlur={() => this.props.destinationValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color marker icon"></i>}  
-                        name='destination'
-                        error={formValidations.destination_error ? true : false} 
-                        clearable 
-                        selection 
-                        options={renderDestinations()}
-                    /> 
-                    {formValidations.destination_error ? <span className='error-message'>{formValidations.destination_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Departure from</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureFromValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color marker icon"></i>}  
-                        name='departure_from'
-                        error={formValidations.departure_from_error ? true : false} 
-                        clearable 
-                        selection 
-                        options={renderDestinations()}
-                    />
-                    {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Departure time</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureTimeValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color time icon"></i>} 
-                        name="departure_time"
-                        error={formValidations.departure_time_error ? true : false} 
-                        value={this.state.departure_time} 
-                        options={renderTimeOptions()} 
-                        selection 
-                        clearable 
-                    />
-                    {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
-                    <label>Number of passenger</label>
-                    <Dropdown 
-                        onBlur={() => this.props.numberOfPassValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color users icon"></i>} 
-                        name="number_of_passengers"
-                        error={formValidations.number_of_passengers_error ? true : false} 
-                        value={this.state.number_of_passengers} 
-                        options={renderNumOfPass()} 
-                        selection 
-                        clearable 
-                    />
-                    {formValidations.number_of_passengers_error ? <span className='error-message'>{formValidations.number_of_passengers_error}</span> : null}
-                </Form.Field>
-
-                <Form.Field>
                     <label>Comments</label>
                     <Form.Input 
                         onBlur={() => this.props.commentsValidator(this.state)} 
@@ -257,7 +258,7 @@ class ReservationForm extends Component {
 const mapStateToProps = (state) => {
     return {
         users: state.firestore.ordered.users,
-        formValidations: state.formValidations
+        formValidations: state.formValidations,
     }
 }
 
@@ -281,7 +282,7 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        {collection: 'users'} 
+        {collection: 'users'}, 
     ])
 )(ReservationForm)
  

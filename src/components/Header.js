@@ -10,7 +10,7 @@ const Header = (props) => {
     const { auth } = props;
     const links = auth.uid ? <SignedInLinks/> : null
     return (
-        <Segment inverted>    
+        <Segment inverted fluid>    
             <Menu inverted secondary>
                 <Menu.Item>
                     <Link to='/' className='item'>

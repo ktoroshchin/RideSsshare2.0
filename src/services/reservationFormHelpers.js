@@ -12,6 +12,15 @@ const destinationOptions = [
     { key: 2, text: 'Montreal', value: 'Montreal' }
 ]
 
+export const renderDestinationOptions = () => {
+    const options = destinationOptions.map(city => {
+        return {
+            key: city.key, text: city.text, value: city.value
+        }
+    })
+    return options;
+}
+
 const timeOptions = [
     { key: 0, text: '', value: null },
     { key: 1, text: '2pm', value: '2pm' },
@@ -46,14 +55,7 @@ export const renderTimeOptions = () => {
     return options;
 }
 
-export const renderDestinations = () => {
-    const options = destinationOptions.map(city => {
-        return {
-            key: city.key, text: city.text, value: city.value
-        }
-    })
-    return options;
-}
+
 
 export const renderDaysOfOperation = () => {
     const options = daysOfOperation.map(day => {
@@ -62,4 +64,24 @@ export const renderDaysOfOperation = () => {
         }
     })
     return options;
+}
+
+export const renderDepartures = (drivers, currentDriver) => {
+    const itinerariesArr = []
+    // const users = this.props.users;
+    // const selectedUser = this.state.driver_id;
+    const foundDriver = drivers.filter(driver => driver.id === currentDriver)
+    foundDriver.forEach(key => {
+        key.itineraries.map(data => {
+            return itinerariesArr.push(data)
+        })
+    })
+    const options = itinerariesArr.map((city => {
+        return {
+            key: city.created_at.seconds, text: city.departure_from, value: city.departure_from
+        }
+    }))
+    console.log(options)
+    return options;   
+    
 }
