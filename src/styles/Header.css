@@ -1,0 +1,11 @@
+.ui.secondary.inverted.pointing.menu .item{
+    justify-content: center;
+}
+
+.ui.mini.image{
+    justify-content: center;
+}
+
+.ui.secondary.inverted.pointing.menu .item{
+    padding: 0px 10px 10px 0px
+}

@@ -1,10 +1,17 @@
-import React, { Component } from 'react'
-import { Dropdown, Form, Icon, Container } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Grid, Dropdown, Form, Icon, Container, Button } from 'semantic-ui-react';
 import { createItinerary } from '../actions/createItinerary';
 import { renderDaysOfOperation } from '../services/reservationFormHelpers';
 import { connect } from 'react-redux';
+import ModalConfirmationOnItineraryCreate from './ModalConfirmationOnItineraryCreate';
 import '../styles/CreateItinerary.css'
 class CreateItinerary extends Component {
+
+    labelColor = {
+        color: 'white'
+    }
+
     state = {
         departure_from: '',
         destination: '',
@@ -14,6 +21,8 @@ class CreateItinerary extends Component {
         drop_off_address: '',
         notes: '',
         price: '',
+        redirect: false,
+        loading: false
     }
 
     isFormValid = () => {
@@ -40,17 +49,35 @@ class CreateItinerary extends Component {
 
     handleSubmit = (e) => { 
         e.preventDefault()
-       this.props.createItinerary(this.state)
+        this.props.createItinerary(this.state)
+        this.setState({loading: true})
+        setTimeout(() => this.setState({
+            redirect: true,
+            loader: false
+        }), 3000)
     }
 
  
 
   render() {
+    const { driverId } =this.props.match.params; 
+    const { redirect } = this.state;
+        if(redirect){
+            return <Redirect to={`/user/create-itinerary-confirmation/${driverId}`}/>
+        }
         return (
-            <Container fluid>
+            <Container className='create-itinerary-container' fluid>
+                <Grid columns={1}>
+                    <Grid.Row>
+                        <Grid.Column textAlign='center' color='white'>
+                            <h1 style={this.labelColor}>Create itinerary and it will be available for your clients online</h1>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                 
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Field>
-                        <label>Departure from:</label>
+                        <label style={this.labelColor}>Departure from:</label>
                         <Form.Input     
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='marker'/>} 
@@ -61,7 +88,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
                 
                     <Form.Field>
-                        <label>Destination</label>
+                        <label style={this.labelColor}>Destination</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='marker'/>} 
@@ -72,7 +99,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
                 
                     <Form.Field>
-                        <label>Departure time:</label>
+                        <label style={this.labelColor}>Departure time:</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='time'/>} 
@@ -83,7 +110,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Days of operation</label>
+                        <label style={this.labelColor}>Days of operation</label>
                         <Dropdown 
                             onChange={this.handleInputChange} 
                             icon={<i className="icon-color calendar icon"></i>}  
@@ -95,7 +122,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Pick-up address</label>
+                        <label style={this.labelColor}>Pick-up address</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='home'/>} 
@@ -106,7 +133,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
         
                     <Form.Field>
-                        <label>Drop-off address</label>
+                        <label style={this.labelColor}>Drop-off address</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='building'/>} 
@@ -117,7 +144,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Notes</label>
+                        <label style={this.labelColor}>Notes</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='comment'/>} 
@@ -129,7 +156,7 @@ class CreateItinerary extends Component {
                     </Form.Field>
 
                     <Form.Field>
-                        <label>Price</label>
+                        <label style={this.labelColor}>Price</label>
                         <Form.Input 
                             onChange={this.handleInputChange} 
                             icon={<Icon color='red' name='dollar sign'/>} 
@@ -139,12 +166,14 @@ class CreateItinerary extends Component {
                         />
                     </Form.Field>
 
-                    <Form.Button 
+                    <Button 
+                        content='Submit' 
+                        secondary 
                         fluid 
-                        disabled={!this.isFormValid()}  
-                        type="submit">
-                        Submit
-                    </Form.Button>
+                        loading={this.state.loading}
+                        disabled={!this.isFormValid()}
+                        type='Submit'
+                    />
                 </Form>
             </Container>
         )

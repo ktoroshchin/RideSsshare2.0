@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { createReservation } from '../actions/createReservation';
-import { Dropdown, Form, Icon, Dimmer, Loader } from 'semantic-ui-react';
+import { Dropdown, Form, Icon, Dimmer, Loader, Button, Container } from 'semantic-ui-react';
+import ModalConfirmation from './ModalConfirmation';
 
 //styles
 import '../styles/ReservationForm.css';
 
 //reservation form helpers
-import { renderNumOfPass, renderTimeOptions, renderDestinationOptions, renderDepartures } from '../services/reservationFormHelpers';
+import { renderNumOfPass, renderTimeOptions, renderDestinations, renderDepartures } from '../services/reservationFormHelpers';
 
 //date picker package
 import DatePicker from "react-datepicker";
@@ -30,18 +32,24 @@ import {
 
 
 class ReservationForm extends Component {
+
+    labelColor = {
+        color: 'white'
+    }
+
     state = {
         driver_id:'',
+        departure_from: '',
+        destination: '',
+        departure_date: new Date(),
+        departure_time: '',
+        number_of_passengers: '',
         name:'',
         email: '',
         phone_number: '',
-        destination: '',
-        departure_from: '',
-        departure_time: '',
-        departure_date: new Date(),
-        number_of_passengers: '',
         comments: '',
-        driver_itineraries: []
+        redirect: false,
+        loading: false
     }
 
     isFormValid = () => {
@@ -70,7 +78,13 @@ class ReservationForm extends Component {
             return formValidations[value] !== null;
         })
         if(foundErrors.length === 0){
-            console.log("Found no errors will submit")
+            console.log("Submitted to firebase")
+            this.props.createReservation(this.state)
+            this.setState({loading: true})
+            setTimeout(() => this.setState({
+                redirect: true,
+                loader: false
+            }), 3000)   
         }
     }
 
@@ -86,6 +100,7 @@ class ReservationForm extends Component {
 
     
   render() {
+      const { redirect } = this.state;
       const { users } = this.props;
       const { formValidations } = this.props;
         if(!users){
@@ -95,162 +110,166 @@ class ReservationForm extends Component {
                 </Dimmer>
             )
         }
+        if(redirect){
+            return <Redirect to='/reservationconfirmation'/>
+        }
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Field>
-                    <label>Choose driver:</label>
-                    <Dropdown 
-                        onBlur={() => this.props.driverIdValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color mail icon"></i>}  
-                        name='driver_id'
-                        error={formValidations.driver_id_error ? true : false}
-                        clearable 
-                        selection 
-                        options={this.renderDrivers()}
-                    />
-                    {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
-                </Form.Field>
+            <Container className='reservation-form-container'>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Field>
+                        <label style={this.labelColor}>Choose driver:</label>
+                        <Dropdown 
+                            onBlur={() => this.props.driverIdValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color mail icon"></i>}  
+                            name='driver_id'
+                            error={formValidations.driver_id_error ? true : false}
+                            clearable 
+                            selection 
+                            options={this.renderDrivers()}
+                        />
+                        {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Departure from</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureFromValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color marker icon"></i>}  
-                        name='departure_from'
-                        error={formValidations.departure_from_error ? true : false} 
-                        clearable 
-                        selection
-                        options={renderDepartures(this.props.users, this.state.driver_id)}
-                        
-                    />
-                    {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Departure from</label>
+                        <Dropdown 
+                            onBlur={() => this.props.departureFromValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color marker icon"></i>}  
+                            name='departure_from'
+                            error={formValidations.departure_from_error ? true : false} 
+                            clearable 
+                            selection
+                            options={renderDepartures(users, this.state.driver_id)}             
+                        />
+                        {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Destination</label>
-                    <Dropdown 
-                        onBlur={() => this.props.destinationValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color marker icon"></i>}  
-                        name='destination'
-                        error={formValidations.destination_error ? true : false} 
-                        clearable 
-                        selection
-                        options={renderDestinationOptions()}
-                         
-                        
-                    /> 
-                    {formValidations.destination_error ? <span className='error-message'>{formValidations.destination_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Destination</label>
+                        <Dropdown 
+                            onBlur={() => this.props.destinationValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color marker icon"></i>}  
+                            name='destination'
+                            error={formValidations.destination_error ? true : false} 
+                            options={renderDestinations(users, this.state.driver_id, this.state.departure_from)}         
+                            clearable 
+                            selection
+                        /> 
+                        {formValidations.destination_error ? <span className='error-message'>{formValidations.destination_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Departure date</label>
-                    <DatePicker
-                        onBlur={()=> this.props.departureDateValidator(this.state)}
-                        selected={this.state.departure_date}
-                        onChange={this.handleDateChange}
-                        error={formValidations.departure_date_error ? true : false}
-                    />
-                    {formValidations.departure_date_error ? <span className='error-message'>{formValidations.departure_date_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Departure date</label>
+                        <DatePicker
+                            onBlur={()=> this.props.departureDateValidator(this.state)}
+                            selected={this.state.departure_date}
+                            onChange={this.handleDateChange}
+                            error={formValidations.departure_date_error ? true : false}
+                        />
+                        {formValidations.departure_date_error ? <span className='error-message'>{formValidations.departure_date_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Departure time</label>
-                    <Dropdown 
-                        onBlur={() => this.props.departureTimeValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color time icon"></i>} 
-                        name="departure_time"
-                        error={formValidations.departure_time_error ? true : false} 
-                        value={this.state.departure_time} 
-                        options={renderTimeOptions()} 
-                        selection 
-                        clearable 
-                    />
-                    {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Departure time</label>
+                        <Dropdown 
+                            onBlur={() => this.props.departureTimeValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color time icon"></i>} 
+                            name="departure_time"
+                            error={formValidations.departure_time_error ? true : false} 
+                            value={this.state.departure_time} 
+                            options={renderTimeOptions(users, this.state.driver_id, this.state.departure_from)}
+                            selection 
+                            clearable  
+                        />
+                        {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Number of passenger</label>
-                    <Dropdown 
-                        onBlur={() => this.props.numberOfPassValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<i className="icon-color users icon"></i>} 
-                        name="number_of_passengers"
-                        error={formValidations.number_of_passengers_error ? true : false} 
-                        value={this.state.number_of_passengers} 
-                        options={renderNumOfPass()} 
-                        selection 
-                        clearable 
-                    />
-                    {formValidations.number_of_passengers_error ? <span className='error-message'>{formValidations.number_of_passengers_error}</span> : null}
-                </Form.Field>
-               
-                <Form.Field>
-                    <label>Name</label>
-                    <Form.Input 
-                        onBlur={()=> this.props.clientNameValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='info'/>} 
-                        iconPosition='left' 
-                        name="name"
-                        error={formValidations.name_error ? true : false}                     
-                        value={this.state.name}       
-                    />
-                    {formValidations.name_error ? <span className='error-message'>{formValidations.name_error}</span> : null}
-                </Form.Field>
-               
-                <Form.Field>
-                    <label>Email</label>
-                    <Form.Input 
-                        onBlur={() => this.props.clientEmailValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='mail'/>} 
-                        iconPosition='left' 
-                        name="email"
-                        error={formValidations.email_error ? true : false} 
-                        value={this.state.email}
-                    />
-                    {formValidations.email_error ? <span className="error-message">{formValidations.email_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Number of passenger</label>
+                        <Dropdown 
+                            onBlur={() => this.props.numberOfPassValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color users icon"></i>} 
+                            name="number_of_passengers"
+                            error={formValidations.number_of_passengers_error ? true : false} 
+                            value={this.state.number_of_passengers} 
+                            options={renderNumOfPass()} 
+                            selection 
+                            clearable 
+                        />
+                        {formValidations.number_of_passengers_error ? <span className='error-message'>{formValidations.number_of_passengers_error}</span> : null}
+                    </Form.Field>
+                
+                    <Form.Field>
+                        <label>Name</label>
+                        <Form.Input 
+                            onBlur={()=> this.props.clientNameValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<Icon color='red' name='info'/>} 
+                            iconPosition='left' 
+                            name="name"
+                            error={formValidations.name_error ? true : false}                     
+                            value={this.state.name}       
+                        />
+                        {formValidations.name_error ? <span className='error-message'>{formValidations.name_error}</span> : null}
+                    </Form.Field>
+                
+                    <Form.Field>
+                        <label style={this.labelColor}>Email</label>
+                        <Form.Input 
+                            onBlur={() => this.props.clientEmailValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<Icon color='red' name='mail'/>} 
+                            iconPosition='left' 
+                            name="email"
+                            error={formValidations.email_error ? true : false} 
+                            value={this.state.email}
+                        />
+                        {formValidations.email_error ? <span className="error-message">{formValidations.email_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Phone number</label>
-                    <Form.Input 
-                        onBlur={() => this.props.clientPhoneValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='phone'/>} 
-                        iconPosition='left' 
-                        name="phone_number"
-                        error={formValidations.phone_number_error ? true : false} 
-                        value={this.state.phone_number}
-                    />
-                    {formValidations.phone_number_error ? <span className='error-message'>{formValidations.phone_number_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Phone number</label>
+                        <Form.Input 
+                            onBlur={() => this.props.clientPhoneValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<Icon color='red' name='phone'/>} 
+                            iconPosition='left' 
+                            name="phone_number"
+                            error={formValidations.phone_number_error ? true : false} 
+                            value={this.state.phone_number}
+                        />
+                        {formValidations.phone_number_error ? <span className='error-message'>{formValidations.phone_number_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Comments</label>
-                    <Form.Input 
-                        onBlur={() => this.props.commentsValidator(this.state)} 
-                        onChange={this.handleInputChange} 
-                        icon={<Icon color='red' name='comment'/>} 
-                        iconPosition='left' 
-                        name="comments"
-                        error={formValidations.comments_error ? true : false} 
-                        value={this.state.comments}
-                    />
-                    {formValidations.comments_error ? <span className='error-message'>{formValidations.comments_error}</span> : null}
-                </Form.Field>
+                    <Form.Field>
+                        <label style={this.labelColor}>Comments</label>
+                        <Form.Input 
+                            onBlur={() => this.props.commentsValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<Icon color='red' name='comment'/>} 
+                            iconPosition='left' 
+                            name="comments"
+                            error={formValidations.comments_error ? true : false} 
+                            value={this.state.comments}
+                        />
+                        {formValidations.comments_error ? <span className='error-message'>{formValidations.comments_error}</span> : null}
+                    </Form.Field>
 
-                <Form.Button 
-                    fluid 
-                    disabled={!this.isFormValid()}  
-                    type="submit">
-                    Submit
-                </Form.Button>
-            </Form>
+                    <Button 
+                        content='Submit' 
+                        secondary 
+                        fluid 
+                        loading={this.state.loading}
+                        disabled={!this.isFormValid()}
+                        type='Submit'
+                    />
+                </Form>
+            </Container>
         )
     }
 }

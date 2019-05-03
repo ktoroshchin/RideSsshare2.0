@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom';
-import {  Grid, Segment, Form, Divider, Button } from 'semantic-ui-react';
+import {  Grid, Segment, Form, Divider, Button, Container } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
 import { connect } from 'react-redux';
+
+//style
+import '../styles/Login.css';
+
 
 //action creators
 import { signIn } from '../actions/authAction';
@@ -41,36 +45,39 @@ class SocialLogin extends Component {
 
     renderAuthorization = () => {
         const { auth } = this.props;
-        const authError = this.props.authError.authError ? <p>{this.props.authError.authError}</p> : false;
+        const authError = this.props.authError.authError ? <div className='error-message-login'>{this.props.authError.authError}</div> : false;
         if(!auth.uid){
             return (
-                <Segment placeholder>
-                    <Grid columns={2} relaxed='very' stackable>
+                <Container className='login-form-container'>
+                    <Segment placeholder>
+                        <Grid columns={2} relaxed='very' stackable>
+                        
+                        <Grid.Column>
+                            
+                                <Form onSubmit={this.onLoginAttempt}>
+                                    <Form.Field>
+                                        <Form.Input onChange={this.onInputChange} name='email'  icon='mail' iconPosition='left' label='Email' placeholder='email' />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Form.Input onChange={this.onInputChange} name='password' icon='lock' iconPosition='left' label='Password' placeholder='password' type='password' />
+                                        {authError}
+                                    </Form.Field>
+                                    <Button className='login-button' content='Login' fluid primary />                  
+                                    <Link to='/sign-up'><Button content='Sign Up' fluid positive /></Link>
+
+                                </Form>
+                            
+                        </Grid.Column>
                     
-                    <Grid.Column>
-                        <div>
-                        <Form onSubmit={this.onLoginAttempt}>
-                            <Form.Input onChange={this.onInputChange} name='email'  icon='mail' iconPosition='left' label='Email' placeholder='email' />
-                            <Form.Input onChange={this.onInputChange} name='password' icon='lock' iconPosition='left' label='Password' placeholder='password' type='password' />
-                    
-                            <Button content='Login' fluid primary />                  
-                        </Form>
-                            <br/>
-                            <Link to='/sign-up'><Button content='Sign Up' fluid positive /></Link>
-                        {authError}
-                        </div>
-                    </Grid.Column>
-                
-                    <Grid.Column verticalAlign='middle'>
-                        <StyledFirebaseAuth
-                             uiConfig={this.uiConfig}
-                             firebaseAuth={fbConfig.auth()}
-                        />
-                    </Grid.Column>
-                    </Grid>
-                
-                    <Divider vertical hidden>Or</Divider>
-                </Segment>
+                        <Grid.Column verticalAlign='middle'>
+                            <StyledFirebaseAuth
+                                uiConfig={this.uiConfig}
+                                firebaseAuth={fbConfig.auth()}
+                            />
+                        </Grid.Column>
+                        </Grid>
+                    </Segment>
+                </Container>
             )        
         }
         return(

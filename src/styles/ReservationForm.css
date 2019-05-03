@@ -1,3 +1,7 @@
+.ui.container.reservation-form-container{
+    padding: 10% 5% 10% 5%;
+}
+
 .react-datepicker-wrapper {
     display: block !important;
 
@@ -11,6 +15,7 @@
     color: red;
 }
 
+
 .ui.form .field{
     margin-bottom: 2%;
 }
@@ -22,3 +27,4 @@
 i.icon.icon-color{
     color:#ed9393;
 }
+

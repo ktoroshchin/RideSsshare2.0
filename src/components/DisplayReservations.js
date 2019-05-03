@@ -5,6 +5,9 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
+//styles
+import '../styles/DisplayReservations.css'
+
 //Components
 import SingleReservation from './SingleReservation'
 
@@ -38,15 +41,8 @@ class DisplayReservations extends Component {
         const { auth } = this.props;
 
         if(!auth.uid) return <Redirect to='/sign-in'/>
-        // else if(!reservations){
-        //     return (
-        //         <Dimmer active>
-        //             <Loader>Loading</Loader>
-        //         </Dimmer>
-        //     )
-        // }
         return (
-            <Container>
+            <Container className='display-reservations'>
                 {this.renderReservations()}
             </Container>
         );

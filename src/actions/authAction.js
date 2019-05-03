@@ -41,7 +41,7 @@ export const crDbUserOnSocialLogin = (user) => {
             firstName: userFullName[0],
             lastName: userFullName[1],
             initials: userFullName[0][0] + userFullName[1][0]
-        })
+        },{merge:true})
         .then(() => { dispatch({ type: 'CR_USER_ON_SOCIAL_LOGIN_SUCCESS'}) })
         .catch((err) => { dispatch({ type: 'CR_USER_ON_SOCIAL_LOGIN_ERROR' }) })
     }

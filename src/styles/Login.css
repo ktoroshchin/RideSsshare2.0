@@ -1,0 +1,18 @@
+.ui.container.login-form-container{
+    padding: 10% 15% 0% 15%;
+}
+
+.ui.placeholder.segment .column .button{
+    margin-top: 2%;
+}
+
+.ui.fluid.primary.button.login-button{
+    background-color: #3b5998;
+} 
+
+.error-message-login{
+    padding-left: 12%;
+    color: red;
+}
+
+

@@ -1,0 +1,10 @@
+body, html {
+    height: 120%;
+    margin: 0;
+    padding: 0;
+    background-image: url("./backGround8.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+}

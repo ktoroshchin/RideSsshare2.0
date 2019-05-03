@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Accordion, Icon, Segment } from 'semantic-ui-react';
+import { Container, Accordion, Icon, Segment } from 'semantic-ui-react';
 import moment from 'moment';
 
 
@@ -20,6 +20,7 @@ class SingleReservation extends Component{
         console.log(departure_date.seconds)
 
         return (
+            
             <Accordion fluid styled>
                 <Accordion.Title active={activeIndex === index} index={index} onClick={this.handleClick}>
                     <Icon name='dropdown' />
