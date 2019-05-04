@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const numOfPassOptions = [
     { key: 0, text: '', value: null },
     { key: 1, text: '1', value: 1 },
@@ -36,22 +38,22 @@ export const renderDaysOfOperation = () => {
 }
 
 export const renderDepartures = (drivers, currentDriver) => {
-    const itinerariesArr = []
+    const itinerariesArr = [];
+    let options = [];
     const foundDriver = drivers.filter(driver => driver.id === currentDriver)
     foundDriver.forEach(key => {
         key.itineraries.map(data => {
             return itinerariesArr.push(data)
         })
     })
-    const options = itinerariesArr.map((city => {
-        return {
-            key: city.created_at.seconds, text: city.departure_from, value: city.departure_from
-        }
-    }))
+    _.uniqBy(itinerariesArr, (city) => {return city.departure_from})
+    .forEach(city => {
+            options = [...options,{key: city.created_at.seconds, text: city.departure_from, value: city.departure_from}]
+        })
     return options;  
 }
 
-export const renderDestinations = (drivers, currentDriver, departureCity) => {
+export const renderDestinations = (drivers, currentDriver, departureCity, destinationCity) => {
     let itinerariesArr = [];
     let options = [];
     const foundDriver = drivers.filter(driver => driver.id === currentDriver)
