@@ -4,8 +4,6 @@ import { Grid, Dropdown, Form, Icon, Container, Button } from 'semantic-ui-react
 import { createItinerary } from '../actions/createItinerary';
 import { renderDaysOfOperation } from '../services/reservationFormHelpers';
 import { connect } from 'react-redux';
-import ModalConfirmationOnItineraryCreate from './ModalConfirmationOnItineraryCreate';
-import '../styles/CreateItinerary.css'
 class CreateItinerary extends Component {
 
     labelColor = {

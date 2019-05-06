@@ -19,6 +19,84 @@ const daysOfOperation = [
     { key: 7, text: 'Sun', value: 'Sun' }
 ]
 
+
+export const renderDepartures = (users) => {
+    let options = [];
+    let departureCities = [];
+    users.forEach(driver => {
+        driver.itineraries.forEach(city => {
+            departureCities = [...departureCities, city.departure_from]
+        })
+    })
+    let uniqDepartureCities = _.uniq(departureCities);
+    uniqDepartureCities.forEach((city, index) => {
+        options = [...options, {key: index, text: city, value: city}]
+    })
+    return options;
+}
+
+export const renderDestinations = (users, departureCity) => {
+    let options = [];
+    let destinationCities = [];
+    users.forEach(driver => {
+        driver.itineraries.forEach((city, index) => {
+            if(city.departure_from === departureCity){
+                destinationCities = [...destinationCities, city.destination]
+            }
+        })
+    })
+    let uniqDestinations = _.uniqBy(destinationCities);
+    uniqDestinations.forEach((city, index) => {
+        options = [...options, {key: index, text: city, value: city}]
+    })
+    return options;
+}
+
+
+export const renderTimeOptions = (users, departureCity, destination) => {
+    let departureTimeArr = [];
+    let options = [];
+    users.forEach(driver => {
+        driver.itineraries.forEach((city, index) => {
+            if(city.departure_from === departureCity && city.destination === destination){
+                city.departure_time.forEach((time, index) => {
+                    departureTimeArr = [...departureTimeArr, time]
+                })
+            }
+        })
+    })
+    _.unionBy(departureTimeArr).forEach((time, index) => {
+        options = [...options, {key: index, text: time, value: time}]
+    })
+    return options;
+}
+
+export const renderDrivers = (users, departureCity, destination, departureTime) => {
+    let options = [];
+    let matchCities = [];
+    let availDrivers = [];
+    users.forEach(driver => {
+        driver.itineraries.forEach((city, index) => {
+            if(city.departure_from === departureCity && city.destination === destination){
+                matchCities = [...matchCities, { ...city,'id': driver.id, 'firstName': driver.firstName, 'lastName': driver.lastName }]
+            }
+        })
+    })
+    matchCities.forEach((city, index) => {
+        city.departure_time.forEach(time => {
+            if (time === departureTime){
+                availDrivers = [...availDrivers, city]
+            }
+        })
+    })
+    _.unionBy(availDrivers, (driver) => {return driver.id})
+    .forEach((driver, index) => {
+        options = [...options, {key: index, text: driver.firstName + ' ' + driver.lastName, value: driver.id}]
+    }) 
+    return options;
+}
+
+
 export const renderNumOfPass = () => {
     const options = numOfPassOptions.map(num => {
         return {
@@ -37,56 +115,5 @@ export const renderDaysOfOperation = () => {
     return options;
 }
 
-export const renderDepartures = (drivers, currentDriver) => {
-    const itinerariesArr = [];
-    let options = [];
-    const foundDriver = drivers.filter(driver => driver.id === currentDriver)
-    foundDriver.forEach(key => {
-        key.itineraries.map(data => {
-            return itinerariesArr.push(data)
-        })
-    })
-    _.uniqBy(itinerariesArr, (city) => {return city.departure_from})
-    .forEach(city => {
-            options = [...options,{key: city.created_at.seconds, text: city.departure_from, value: city.departure_from}]
-        })
-    return options;  
-}
 
-export const renderDestinations = (drivers, currentDriver, departureCity, destinationCity) => {
-    let itinerariesArr = [];
-    let options = [];
-    const foundDriver = drivers.filter(driver => driver.id === currentDriver)
-    foundDriver.forEach(key => {
-        key.itineraries.map(data => {
-            return itinerariesArr.push(data)
-        })
-    })
-    itinerariesArr.forEach(city => {
-        if(city.departure_from === departureCity){
-            options = [...options,{key: city.created_at.seconds, text: city.destination, value: city.destination}]
-        }
-    })
-    return options;
-}
 
-export const renderTimeOptions = (drivers, currentDriver, departureCity) => {
-    let itinerariesArr = [];
-    let options = [];
-    const foundDriver = drivers.filter(driver => driver.id === currentDriver)
-    foundDriver.forEach(key => {
-        key.itineraries.map(data => {
-            return itinerariesArr = [...itinerariesArr, data]
-        })
-    })
-    itinerariesArr.forEach(city => {
-        if(city.departure_from === departureCity){
-            city.departure_time.map((time, index) => {
-                console.log(time)
-                return options = [...options, { key: index, text: time, value: time }]
-            })
-        }
-    })
-    console.log(options) 
-    return options;
-}

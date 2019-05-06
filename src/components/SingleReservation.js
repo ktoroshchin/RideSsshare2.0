@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Accordion, Icon, Segment } from 'semantic-ui-react';
+import { Accordion, Icon, Segment } from 'semantic-ui-react';
 import moment from 'moment';
 
 

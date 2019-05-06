@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Modal, Button, Grid } from  'semantic-ui-react';
+import { Modal, Button } from  'semantic-ui-react';
 
 class ModalConfirmationOnItineraryCreate extends Component {
 

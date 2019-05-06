@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import fbConfig from './config/fbConfig';
 import App from './components/App';
-import './styles/index.css';
+import '../src/styles/index.css';
 
 
 

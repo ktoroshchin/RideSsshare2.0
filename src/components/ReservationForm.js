@@ -5,13 +5,12 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { createReservation } from '../actions/createReservation';
 import { Dropdown, Form, Icon, Dimmer, Loader, Button, Container } from 'semantic-ui-react';
-import ModalConfirmation from './ModalConfirmation';
 
 //styles
 import '../styles/ReservationForm.css';
 
 //reservation form helpers
-import { renderNumOfPass, renderTimeOptions, renderDestinations, renderDepartures } from '../services/reservationFormHelpers';
+import { renderNumOfPass, renderTimeOptions, renderDestinations, renderDepartures, renderDrivers } from '../services/reservationFormHelpers';
 
 //date picker package
 import DatePicker from "react-datepicker";
@@ -88,15 +87,7 @@ class ReservationForm extends Component {
         }
     }
 
-    renderDrivers = () => {
-        const { users } = this.props;
-        const options = users.map((driver,index, arr) => {
-            return {
-                key: driver.id, text: driver.firstName + " " + driver.lastName, value: driver.id
-            }  
-        })
-        return options;
-    }
+
 
     
   render() {
@@ -116,20 +107,6 @@ class ReservationForm extends Component {
         return (
             <Container className='reservation-form-container'>
                 <Form onSubmit={this.handleSubmit}>
-                    <Form.Field>
-                        <label style={this.labelColor}>Choose driver:</label>
-                        <Dropdown 
-                            onBlur={() => this.props.driverIdValidator(this.state)} 
-                            onChange={this.handleInputChange} 
-                            icon={<i className="icon-color mail icon"></i>}  
-                            name='driver_id'
-                            error={formValidations.driver_id_error ? true : false}
-                            clearable 
-                            selection 
-                            options={this.renderDrivers()}
-                        />
-                        {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
-                    </Form.Field>
 
                     <Form.Field>
                         <label style={this.labelColor}>Departure from</label>
@@ -141,7 +118,7 @@ class ReservationForm extends Component {
                             error={formValidations.departure_from_error ? true : false} 
                             clearable 
                             selection
-                            options={renderDepartures(users, this.state.driver_id)}             
+                            options={renderDepartures(users)}             
                         />
                         {formValidations.departure_from_error ? <span className='error-message'>{formValidations.departure_from_error}</span> : null}    
                     </Form.Field>
@@ -154,7 +131,7 @@ class ReservationForm extends Component {
                             icon={<i className="icon-color marker icon"></i>}  
                             name='destination'
                             error={formValidations.destination_error ? true : false} 
-                            options={renderDestinations(users, this.state.driver_id, this.state.departure_from)}         
+                            options={renderDestinations(users, this.state.departure_from)}         
                             clearable 
                             selection
                         /> 
@@ -181,11 +158,26 @@ class ReservationForm extends Component {
                             name="departure_time"
                             error={formValidations.departure_time_error ? true : false} 
                             value={this.state.departure_time} 
-                            options={renderTimeOptions(users, this.state.driver_id, this.state.departure_from)}
+                            options={renderTimeOptions(users, this.state.departure_from, this.state.destination)}
                             selection 
                             clearable  
                         />
                         {formValidations.departure_time_error ? <span className='error-message'>{formValidations.departure_time_error}</span> : null}
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label style={this.labelColor}>Choose driver:</label>
+                        <Dropdown 
+                            onBlur={() => this.props.driverIdValidator(this.state)} 
+                            onChange={this.handleInputChange} 
+                            icon={<i className="icon-color mail icon"></i>}  
+                            name='driver_id'
+                            error={formValidations.driver_id_error ? true : false}
+                            clearable 
+                            selection 
+                            options={renderDrivers(users, this.state.departure_from, this.state.destination, this.state.departure_time)}
+                        />
+                        {formValidations.driver_id_error ? <span className="error-message">{formValidations.driver_id_error}</span> : null}   
                     </Form.Field>
 
                     <Form.Field>

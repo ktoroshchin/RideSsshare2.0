@@ -1,3 +1,10 @@
+@import './Header.css';
+@import './DisplayReservations.css';
+@import './CreateItinerary.css';
+@import './Login.css';
+@import './ReservationForm.css';
+
+
 body, html {
     height: 120%;
     margin: 0;

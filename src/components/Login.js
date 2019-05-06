@@ -5,10 +5,6 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import fbConfig from '../config/fbConfig';
 import { connect } from 'react-redux';
 
-//style
-import '../styles/Login.css';
-
-
 //action creators
 import { signIn } from '../actions/authAction';
 import { crDbUserOnSocialLogin } from '../actions/authAction';

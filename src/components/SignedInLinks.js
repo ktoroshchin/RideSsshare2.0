@@ -3,7 +3,6 @@ import { connect } from 'react-redux' ;
 import { Menu, Image, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { signOut } from '../actions/authAction';
-import '../styles/Header.css';
 
 const signedInLinks = (props) => {
     const { displayName, photoURL, uid } = props.firebase;

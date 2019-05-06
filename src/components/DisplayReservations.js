@@ -5,9 +5,6 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
-//styles
-import '../styles/DisplayReservations.css'
-
 //Components
 import SingleReservation from './SingleReservation'
 
