@@ -1,0 +1,20 @@
+.reserv-content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.departure-city{
+    margin: 0%;
+}
+
+.destination-city{
+    margin: 0%;
+}
+
+.departure-time{
+    margin: 0%;
+}
+
+i.icon.icon-color-disp-reservation{
+    color:#ed9393;
+}

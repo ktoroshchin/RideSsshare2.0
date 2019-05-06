@@ -3,7 +3,7 @@
 @import './CreateItinerary.css';
 @import './Login.css';
 @import './ReservationForm.css';
-
+@import './SingleReservation.css';
 
 body, html {
     height: 120%;

@@ -16,16 +16,21 @@ class SingleReservation extends Component{
     }
     render(){
         const { activeIndex } = this.state
-        const { departure_from, departure_date, departure_time, destination, driver_id, email, index, comments, name, number_of_passengers, phone_number } = this.props;
-        console.log(departure_date.seconds)
+        const { departure_from, departure_date, departure_time, destination, email, index, comments, name, number_of_passengers, phone_number } = this.props;
 
         return (
             
             <Accordion fluid styled>
                 <Accordion.Title active={activeIndex === index} index={index} onClick={this.handleClick}>
-                    <Icon name='dropdown' />
-                        ORDER # 
-                    </Accordion.Title>
+                    <div className="reserv-content">
+                            <Icon className='icon-color-disp-reservation' name='car'></Icon>
+                            <h4 className='departure-city'>{departure_from}</h4> 
+                            <Icon className='icon-color-disp-reservation' name='long arrow alternate right'></Icon>
+                            <h4 className='destination-city'>{destination}</h4>
+                            <span>on</span>
+                            <h4 className='departure-time'>{moment.unix(departure_date.seconds).format("MM/DD/YYYY")}</h4> 
+                    </div>
+                </Accordion.Title>
                 <Accordion.Content active={activeIndex === index}>
                     <Segment.Group>
                         <Segment>Departure Date: {moment.unix(departure_date.seconds).format("MM/DD/YYYY")} </Segment>
