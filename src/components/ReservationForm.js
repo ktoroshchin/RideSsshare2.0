@@ -197,7 +197,7 @@ class ReservationForm extends Component {
                     </Form.Field>
                 
                     <Form.Field>
-                        <label>Name</label>
+                        <label style={this.labelColor}>Name</label>
                         <Form.Input 
                             onBlur={()=> this.props.clientNameValidator(this.state)} 
                             onChange={this.handleInputChange} 

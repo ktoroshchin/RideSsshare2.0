@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom';
-import {  Grid, Segment, Form, Divider, Button, Container } from 'semantic-ui-react';
+import {  Grid, Segment, Form, Button, Container } from 'semantic-ui-react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import fbConfig from '../config/fbConfig';
+import fbConfig from '../../config/fbConfig';
 import { connect } from 'react-redux';
 
 //action creators
-import { signIn } from '../actions/authAction';
-import { crDbUserOnSocialLogin } from '../actions/authAction';
+import { signIn } from '../../actions/authAction';
+import { crDbUserOnSocialLogin } from '../../actions/authAction';
 
 class SocialLogin extends Component {
     state = { 

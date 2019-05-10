@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux' ;
 import { Menu, Image, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { signOut } from '../actions/authAction';
+import { signOut } from '../../actions/authAction';
 
 const signedInLinks = (props) => {
-    const { displayName, photoURL, uid } = props.firebase;
+    const { photoURL, uid } = props.firebase;
     return (
         <Menu.Menu position='right'>
             <Menu.Item>  

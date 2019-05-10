@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Grid, Dropdown, Form, Icon, Container, Button } from 'semantic-ui-react';
-import { createItinerary } from '../actions/createItinerary';
-import { renderDaysOfOperation } from '../services/reservationFormHelpers';
+import { createItinerary } from '../../actions/createItinerary';
+import { renderDaysOfOperation } from '../../services/reservationFormHelpers';
 import { connect } from 'react-redux';
 class CreateItinerary extends Component {
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import GoogleAuth from './GoogleAuth';
-import { signOut } from '../actions/authAction';
+import { signOut } from '../../actions/authAction';
 import { connect } from 'react-redux';
 import { Menu, Segment, Grid, Button } from 'semantic-ui-react';
 import SignedInLinks from './SignedInLinks';

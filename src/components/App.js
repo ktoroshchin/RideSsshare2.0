@@ -3,14 +3,13 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 //components
 import ReservationForm from './ReservationForm';
-import Header from './Header';
-import Login from './Login';
-import SignUp from './SignUp';
+import Header from '../components/Header/Header';
+import Login from '../components/Login/Login';
+import SignUp from '../components/Login/SignUp';
 import Welcome from './Welcome';
-import ReservationDetails from './ReservationDetails'
-import DisplayReservations from './DisplayReservations';
-import CreateItinerary from './CreateItinerary';
-import ModalConfirmationOnItineraryCreate from './ModalConfirmationOnItineraryCreate';
+import DisplayReservations from '../components/DriverAccount/DisplayReservations';
+import CreateItinerary from '../components/DriverAccount/CreateItinerary.js';
+import ModalConfirmationOnItineraryCreate from '../components/DriverAccount/ModalConfirmationOnItineraryCreate';
 import ModalConfirmation from './ModalConfirmation';
 
 
@@ -25,7 +24,6 @@ const App = () => {
                             <Route path='/sign-in' exact component={Login}/>
                             <Route path='/sign-up' exact component={SignUp}/>
                             <Route path='/reservation-form' exact component={ReservationForm}/>
-                            <Route path='/user/reservation-details/:id' exact component={ReservationDetails}/>
                             <Route path='/user/reservations/:driverId' exact component={DisplayReservations}/>
                             <Route path='/user/create-itinerary/:driverId' exact component={CreateItinerary}/>
                             <Route path='/user/create-itinerary-confirmation/:driverId' exact component={ModalConfirmationOnItineraryCreate}/>

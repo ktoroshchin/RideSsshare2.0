@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Container, Dimmer, Loader } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
 //Components
@@ -34,7 +34,6 @@ class DisplayReservations extends Component {
     }
 
     render() {
-        const { reservations } = this.props;
         const { auth } = this.props;
 
         if(!auth.uid) return <Redirect to='/sign-in'/>
@@ -47,7 +46,6 @@ class DisplayReservations extends Component {
 }
 
 const mapStateToProps = (state,ownProps) => {
-    console.log(state.firestore.ordered.reservations)
     const { reservations = [] } = state.firestore.ordered;
     return {
         reservations: reservations.filter(reservation => reservation.driver_id === ownProps.match.params.driverId),

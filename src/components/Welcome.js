@@ -12,7 +12,7 @@ class Welcome extends Component {
     return (
       <Container>
         <Modal open={open} basic>
-          <Grid>
+          <Grid stackable>
             <Grid.Row columns={2}>
               <Grid.Column>
                 <Link to='reservation-form'><Button fluid size='massive' inverted color='green'>I need a ride</Button></Link>

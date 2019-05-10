@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { Button, Modal, Form } from 'semantic-ui-react';
-import { signUp } from '../actions/authAction';
+import { signUp } from '../../actions/authAction';
 
 class SignUp extends Component {
 

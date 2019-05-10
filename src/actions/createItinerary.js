@@ -1,5 +1,4 @@
 export const createItinerary = (itinerary) => {
-    console.log(itinerary)
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const uid = getFirebase().auth().currentUser.uid
         const firestore = getFirestore();
