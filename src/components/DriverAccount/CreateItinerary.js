@@ -19,6 +19,7 @@ class CreateItinerary extends Component {
         drop_off_address: '',
         notes: '',
         price: '',
+        phone_number: '',
         redirect: false,
         loading: false
     }
@@ -31,11 +32,12 @@ class CreateItinerary extends Component {
             days_of_operation, 
             pick_up_address, 
             drop_off_address, 
+            phone_number,
             notes,
             price 
         } = this.state;
 
-        return departure_from && destination && departure_time && days_of_operation && pick_up_address && drop_off_address && notes && price 
+        return departure_from && destination && departure_time && days_of_operation && pick_up_address && drop_off_address && phone_number && notes && price 
     }
 
 
@@ -139,6 +141,17 @@ class CreateItinerary extends Component {
                             name='drop_off_address'
                             value={this.state.drop_off_address}
                         />
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label style={this.labelColor}>Your phone number</label>
+                        <Form.Input     
+                            onChange={this.handleInputChange} 
+                            icon={<Icon color='red' name='tty'/>} 
+                            iconPosition='left' 
+                            name='phone_number'
+                            value={this.state.phone_number}       
+                        /> 
                     </Form.Field>
 
                     <Form.Field>

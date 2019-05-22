@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Modal, Button } from  'semantic-ui-react';
+import React, { Component } from '../../node_modules/react';
+import { Link } from '../../node_modules/react-router-dom';
+import { Modal, Button } from  '../../node_modules/semantic-ui-react';
 
 class ModalConfirmation extends Component {
 

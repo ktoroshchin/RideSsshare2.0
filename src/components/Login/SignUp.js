@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import { Button, Modal, Form } from 'semantic-ui-react';
+import React, { Component } from '../../../node_modules/react';
+import { connect } from '../../../node_modules/react-redux/lib';
+import { Link, Redirect } from '../../../node_modules/react-router-dom';
+import { Button, Modal, Form } from '../../../node_modules/semantic-ui-react';
 import { signUp } from '../../actions/authAction';
 
 class SignUp extends Component {

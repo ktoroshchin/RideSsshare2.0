@@ -12,6 +12,7 @@ import SingleReservation from './SingleReservation'
 class DisplayReservations extends Component {
 
     renderReservations = () => {
+        const driverName = this.props.auth.displayName;
         return this.props.reservations.map((order, index) => {
             return (
                 <SingleReservation
@@ -19,6 +20,7 @@ class DisplayReservations extends Component {
                     index={index}
                     id={order.id}
                     name={order.name}
+                    driverName={driverName}
                     email={order.email}
                     driver_id={order.driver_id}
                     departure_from={order.departure_from}
@@ -27,7 +29,8 @@ class DisplayReservations extends Component {
                     destination={order.destination}
                     number_of_passengers={order.number_of_passengers}
                     phone_number={order.phone_number}
-                    comments={order.comments}
+                    driver_phoneNumber={order.driver_phoneNumber}
+                    comments={order.comments}                
                 />
             )
         })
@@ -58,7 +61,7 @@ const mapStateToProps = (state,ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        {collection: 'reservations'}
+        {collection: 'reservations'},
     ])
 )(DisplayReservations)
 

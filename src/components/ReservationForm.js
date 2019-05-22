@@ -36,9 +36,13 @@ class ReservationForm extends Component {
         color: 'white'
     }
 
-    state = {
-        driver_id:'',
+    state = { 
+        loader:{
+            redirect: false,
+            loading: false  
+        },
         departure_from: '',
+        driver_id:'',   
         destination: '',
         departure_date: new Date(),
         departure_time: '',
@@ -46,22 +50,58 @@ class ReservationForm extends Component {
         name:'',
         email: '',
         phone_number: '',
+        driver_phoneNumber: '',
         comments: '',
-        redirect: false,
-        loading: false
+        
+    }
+
+
+    shouldComponentUpdate = (nextProps, nextState) => {
+        if(nextState.departure_from !== this.state.departure_from){
+            this.setState({
+                driver_id:'',   
+                destination: '',
+                departure_time: '',
+                number_of_passengers: '',
+            })
+        }
+        return true
+    }
+
+    getDriverPhone = () => {
+        let driver_phoneNumber;
+        let selectedUser = this.props.users.filter(user => user.id === this.state.driver_id)
+        console.log(selectedUser)
+        selectedUser.forEach(key => {
+            key.itineraries.forEach(city => {
+                if(city.departure_from === this.state.departure_from && city.destination === this.state.destination){
+                    driver_phoneNumber = city.phone_number
+                }
+            })
+        })
+        this.setState({driver_phoneNumber: driver_phoneNumber })
     }
 
     isFormValid = () => {
         const { driver_id, name, email, phone_number, destination, departure_from, departure_time, number_of_passengers } = this.state;
         return driver_id && name && email && phone_number && destination && departure_from && departure_time && number_of_passengers
     }
-
+    // const formData = {...this.state}
+    // formData[name] = value
+    // this.setState({
+    //     formData
+    // })
+    //onChange = e => this.setState({
+    //    data: {...this.state.data, [e.target.name]: e.target.value }
+   // });
 
     handleInputChange = (e,{value, name}) => {
         this.setState({
             [name]: value
         })
+ 
     }
+
 
     handleDateChange = (date) => {
         this.setState({
@@ -79,19 +119,22 @@ class ReservationForm extends Component {
         if(foundErrors.length === 0){
             console.log("Submitted to firebase")
             this.props.createReservation(this.state)
-            this.setState({loading: true})
+            this.setState({
+                loader: {
+                    loading: true
+                }
+            })
             setTimeout(() => this.setState({
-                redirect: true,
-                loader: false
+                loader:{
+                    redirect: true,
+                    loading: false
+                }
             }), 3000)   
         }
     }
 
-
-
-    
   render() {
-      const { redirect } = this.state;
+      const { redirect } = this.state.loader;
       const { users } = this.props;
       const { formValidations } = this.props;
         if(!users){
@@ -111,7 +154,7 @@ class ReservationForm extends Component {
                     <Form.Field>
                         <label style={this.labelColor}>Departure from</label>
                         <Dropdown 
-                            onBlur={() => this.props.departureFromValidator(this.state)} 
+                            onBlur={() => this.props.departureFromValidator(this.state)}
                             onChange={this.handleInputChange} 
                             icon={<i className="icon-color marker icon"></i>}  
                             name='departure_from'
@@ -128,8 +171,9 @@ class ReservationForm extends Component {
                         <Dropdown 
                             onBlur={() => this.props.destinationValidator(this.state)} 
                             onChange={this.handleInputChange} 
-                            icon={<i className="icon-color marker icon"></i>}  
+                            icon={<i className="icon-color icon-fix marker icon"></i>}  
                             name='destination'
+                            value={this.state.destination}
                             error={formValidations.destination_error ? true : false} 
                             options={renderDestinations(users, this.state.departure_from)}         
                             clearable 
@@ -173,6 +217,7 @@ class ReservationForm extends Component {
                             icon={<i className="icon-color mail icon"></i>}  
                             name='driver_id'
                             error={formValidations.driver_id_error ? true : false}
+                            value={this.state.driver_id}
                             clearable 
                             selection 
                             options={renderDrivers(users, this.state.departure_from, this.state.destination, this.state.departure_time)}
@@ -256,9 +301,10 @@ class ReservationForm extends Component {
                         content='Submit' 
                         secondary 
                         fluid 
-                        loading={this.state.loading}
+                        loading={this.state.loader.loading}
                         disabled={!this.isFormValid()}
                         type='Submit'
+                        onClick={this.getDriverPhone}
                     />
                 </Form>
             </Container>
